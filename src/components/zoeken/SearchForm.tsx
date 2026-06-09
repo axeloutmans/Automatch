@@ -268,8 +268,22 @@ export default function SearchForm() {
   const marketData = marketKey ? MARKET_PRICES[marketKey] : null;
 
   const budgetMax = parseInt(data.priceMax) || 0;
-  const budgetSignal = marketData && budgetMax > 0
-    ? budgetMax < marketData.min ? "low" : budgetMax > marketData.max ? "high" : "good"
+  const yearMin = parseInt(data.yearMin) || 0;
+
+  // Pas marktprijzen aan op basis van bouwjaar:
+  // Nieuwer dan gemiddeld → prijs hoger, ouder → prijs lager (~8% per jaar)
+  const adjustedMarket = marketData && yearMin > 0 ? (() => {
+    const diff = yearMin - marketData.avgYear;
+    const factor = Math.pow(1.08, diff); // 8% per jaar
+    return {
+      min: Math.round(marketData.min * factor),
+      max: Math.round(marketData.max * factor),
+      avg: Math.round(marketData.avg * factor),
+    };
+  })() : marketData ? { min: marketData.min, max: marketData.max, avg: marketData.avg } : null;
+
+  const budgetSignal = adjustedMarket && budgetMax > 0
+    ? budgetMax < adjustedMarket.min ? "low" : budgetMax > adjustedMarket.max ? "high" : "good"
     : null;
 
   const selectedOptCount = Object.keys(data.options).length;
@@ -458,7 +472,7 @@ export default function SearchForm() {
                 </Field>
               </div>
               {/* Marktindicator */}
-              {marketData && budgetMax > 0 && (
+              {adjustedMarket && budgetMax > 0 && budgetSignal && (
                 <div className={`flex items-start gap-2.5 p-3.5 rounded-xl text-sm border mt-1 ${
                   budgetSignal === "low" ? "bg-red-50 border-red-100 text-red-700" :
                   budgetSignal === "high" ? "bg-blue-50 border-blue-100 text-blue-700" :
@@ -471,9 +485,14 @@ export default function SearchForm() {
                     {budgetSignal === "low" && (
                       <>
                         <strong className="block mb-1">Dit budget lijkt niet realistisch.</strong>
-                        Vergelijkbare voertuigen worden aangeboden tussen{" "}
-                        <strong>{formatCurrency(marketData.min)}</strong> en{" "}
-                        <strong>{formatCurrency(marketData.max)}</strong>.
+                        {yearMin > 0
+                          ? <>Vergelijkbare voertuigen van bouwjaar {yearMin}+ worden aangeboden tussen{" "}
+                            <strong>{formatCurrency(adjustedMarket.min)}</strong> en{" "}
+                            <strong>{formatCurrency(adjustedMarket.max)}</strong>.</>
+                          : <>Vergelijkbare voertuigen worden aangeboden tussen{" "}
+                            <strong>{formatCurrency(adjustedMarket.min)}</strong> en{" "}
+                            <strong>{formatCurrency(adjustedMarket.max)}</strong>.</>
+                        }
                         <div className="mt-2 flex flex-wrap gap-1.5 text-xs">
                           <span className="bg-red-100 px-2 py-0.5 rounded-full">Budget verhogen</span>
                           <span className="bg-red-100 px-2 py-0.5 rounded-full">Bouwjaar verlagen</span>
@@ -484,21 +503,24 @@ export default function SearchForm() {
                     {budgetSignal === "high" && (
                       <>
                         <strong className="block mb-0.5">Ruim budget.</strong>
-                        Voor dit budget vind je doorgaans een recente uitvoering met weinig kilometers.
-                        Marktgemiddelde: {formatCurrency(marketData.avg)}.
+                        Voor dit budget vind je doorgaans een{yearMin > 0 ? ` ${yearMin}+` : " recente"} uitvoering met weinig kilometers.
+                        Marktgemiddelde: {formatCurrency(adjustedMarket.avg)}.
                       </>
                     )}
                     {budgetSignal === "good" && (
                       <>
                         <strong className="block mb-0.5">Goed nieuws — realistisch budget!</strong>
-                        Jouw budget sluit goed aan bij de huidige markt. Marktgemiddelde:{" "}
-                        {formatCurrency(marketData.avg)} (range {formatCurrency(marketData.min)}–{formatCurrency(marketData.max)}).
+                        Jouw budget sluit goed aan bij de huidige markt.{" "}
+                        {yearMin > 0 && <>Voor bouwjaar {yearMin}+: </>}
+                        Marktgemiddelde: {formatCurrency(adjustedMarket.avg)} (range {formatCurrency(adjustedMarket.min)}–{formatCurrency(adjustedMarket.max)}).
                       </>
                     )}
-                    <div className="mt-1.5 text-xs opacity-70 flex items-center gap-1">
-                      <Info className="w-3 h-3" />
-                      Gemiddeld bouwjaar {marketData.avgYear} · {marketData.avgKm.toLocaleString("nl-NL")} km op de markt
-                    </div>
+                    {marketData && (
+                      <div className="mt-1.5 text-xs opacity-70 flex items-center gap-1">
+                        <Info className="w-3 h-3" />
+                        Referentie: gemiddeld bouwjaar {marketData.avgYear} · {marketData.avgKm.toLocaleString("nl-NL")} km op de markt
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
