@@ -71,13 +71,13 @@ export default function Navbar() {
       {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden bg-white border-t border-slate-100 px-4 py-4 space-y-2">
-          <Link href="/#hoe-werkt-het" className="block py-2 text-slate-600">Hoe werkt het</Link>
-          <Link href="/voor-dealers" className="block py-2 text-slate-600">Voor dealers</Link>
+          <Link href="/#hoe-werkt-het" className="block py-2 text-slate-600" onClick={() => setMenuOpen(false)}>Hoe werkt het</Link>
+          <Link href="/voor-dealers" className="block py-2 text-slate-600" onClick={() => setMenuOpen(false)}>Voor dealers</Link>
           <div className="pt-2 flex flex-col gap-2">
-            <Link href="/inloggen">
+            <Link href="/inloggen" onClick={() => setMenuOpen(false)}>
               <Button variant="outline" className="w-full gap-2"><User className="w-4 h-4" /> Inloggen</Button>
             </Link>
-            <Link href="/zoeken">
+            <Link href="/zoeken" onClick={() => setMenuOpen(false)}>
               <Button className="w-full bg-slate-900 text-white">Auto zoeken</Button>
             </Link>
           </div>

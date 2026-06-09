@@ -1,11 +1,19 @@
+"use client";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { DUMMY_LEADS, formatCurrency, getLeadScoreLabel, getBuyIntentUrgency } from "@/lib/data";
+import { formatCurrency, getLeadScoreLabel, getBuyIntentUrgency } from "@/lib/data";
 import {
-  ArrowRight, Bell, Clock, CheckCircle, MessageSquare,
-  Eye, TrendingUp, Search, BadgeCheck, AlertCircle, ChevronRight
+  ArrowRight, Bell, Clock, MessageSquare,
+  Eye, Search, BadgeCheck, ChevronRight
 } from "lucide-react";
+
+function greeting() {
+  const h = new Date().getHours();
+  if (h < 12) return "Goedemorgen";
+  if (h < 18) return "Goedemiddag";
+  return "Goedenavond";
+}
 
 const MY_REQUESTS = [
   {
@@ -79,7 +87,7 @@ export default function PortaalOverzicht() {
     <div className="p-6 md:p-8 max-w-5xl">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-slate-900">Goedemiddag, Jan 👋</h1>
+        <h1 className="text-2xl font-bold text-slate-900">{greeting()} 👋</h1>
         <p className="text-slate-500 mt-1">
           Je hebt <strong>{unreadTotal} nieuwe aanbiedingen</strong> ontvangen op jouw zoekopdracht.
         </p>

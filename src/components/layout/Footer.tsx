@@ -33,8 +33,8 @@ export default function Footer() {
             <h4 className="text-white font-semibold mb-4 text-sm">Dealers</h4>
             <ul className="space-y-2.5 text-sm">
               <li><Link href="/voor-dealers" className="hover:text-white transition-colors">Dealer worden</Link></li>
-              <li><Link href="/voor-dealers#prijzen" className="hover:text-white transition-colors">Prijzen & abonnementen</Link></li>
-              <li><Link href="/dealer/dashboard" className="hover:text-white transition-colors">Dashboard</Link></li>
+              <li><Link href="/dealer/registreren" className="hover:text-white transition-colors">Gratis aanmelden</Link></li>
+              <li><Link href="/dealer/inloggen" className="hover:text-white transition-colors">Dealer login</Link></li>
             </ul>
           </div>
 

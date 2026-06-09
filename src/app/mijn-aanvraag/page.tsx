@@ -5,7 +5,7 @@ import Navbar from "@/components/layout/Navbar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatCurrency, getBuyIntentUrgency } from "@/lib/data";
-import { CheckCircle, Clock, MapPin, BadgeCheck, MessageSquare, Eye, EyeOff, Trash2, Pause } from "lucide-react";
+import { Clock, BadgeCheck, MessageSquare, Eye, EyeOff, Trash2, Pause, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
 const DEMO_OFFERS = [
@@ -51,6 +51,11 @@ export default function MijnAanvraagPage() {
     <div className="min-h-screen bg-slate-50">
       <Navbar />
       <div className="max-w-4xl mx-auto px-4 pt-24 pb-16">
+
+        {/* Terugknop */}
+        <Link href="/portaal/aanvragen" className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-900 transition-colors mb-6">
+          <ArrowLeft className="w-4 h-4" /> Terug naar aanvragen
+        </Link>
 
         {/* Header */}
         <div className="flex items-start justify-between mb-8">
