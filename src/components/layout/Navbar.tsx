@@ -41,22 +41,14 @@ export default function Navbar() {
             <Link href="/voor-dealers" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
               Voor dealers
             </Link>
-            <Link href="/#prijzen" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
-              Prijzen
-            </Link>
           </nav>
 
           {/* CTA */}
           <div className="hidden md:flex items-center gap-2">
-            <Link href="/portaal">
+            <Link href="/inloggen">
               <Button variant="ghost" size="sm" className="text-slate-600 hover:text-slate-900 gap-1.5">
                 <User className="w-4 h-4" />
-                Mijn aanvragen
-              </Button>
-            </Link>
-            <Link href="/dealer/inloggen">
-              <Button variant="ghost" size="sm" className="text-slate-600 hover:text-slate-900">
-                Dealer login
+                Inloggen
               </Button>
             </Link>
             <Link href="/zoeken">
@@ -81,13 +73,9 @@ export default function Navbar() {
         <div className="md:hidden bg-white border-t border-slate-100 px-4 py-4 space-y-2">
           <Link href="/#hoe-werkt-het" className="block py-2 text-slate-600">Hoe werkt het</Link>
           <Link href="/voor-dealers" className="block py-2 text-slate-600">Voor dealers</Link>
-          <Link href="/#prijzen" className="block py-2 text-slate-600">Prijzen</Link>
           <div className="pt-2 flex flex-col gap-2">
-            <Link href="/portaal">
-              <Button variant="outline" className="w-full gap-2"><User className="w-4 h-4" /> Mijn aanvragen</Button>
-            </Link>
-            <Link href="/dealer/inloggen">
-              <Button variant="outline" className="w-full">Dealer login</Button>
+            <Link href="/inloggen">
+              <Button variant="outline" className="w-full gap-2"><User className="w-4 h-4" /> Inloggen</Button>
             </Link>
             <Link href="/zoeken">
               <Button className="w-full bg-slate-900 text-white">Auto zoeken</Button>

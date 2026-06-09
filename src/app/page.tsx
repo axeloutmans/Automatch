@@ -4,12 +4,12 @@ import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import CookieBanner from "@/components/shared/CookieBanner";
-import { DUMMY_LEADS, getLeadScoreLabel, formatCurrency, getBuyIntentUrgency, SUBSCRIPTION_PLANS } from "@/lib/data";
+import { DUMMY_LEADS, getLeadScoreLabel, formatCurrency, getBuyIntentUrgency } from "@/lib/data";
 import {
   ArrowRight, Search, Zap, Shield, Star, CheckCircle,
   Car, TrendingUp, ChevronRight, ArrowUpRight,
-  Sparkles, Clock, MapPin, ShieldCheck, Lock, BadgeCheck,
-  Flame, X
+  Clock, MapPin, ShieldCheck, Lock, BadgeCheck,
+  Sparkles, X
 } from "lucide-react";
 
 export default function HomePage() {
@@ -328,72 +328,16 @@ export default function HomePage() {
             <Link href="/voor-dealers">
               <Button size="lg" className="bg-white text-slate-900 hover:bg-slate-100 rounded-full px-8">
                 <Car className="w-4 h-4 mr-2" />
-                Gratis aanmelden als dealer
+                Meer informatie voor dealers
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </Link>
-            <Link href="/voor-dealers#prijzen">
+            <Link href="/dealer/registreren">
               <Button variant="ghost" size="lg" className="text-slate-400 hover:text-white rounded-full px-6">
-                Bekijk prijzen en abonnementen →
+                Gratis aanmelden →
               </Button>
             </Link>
           </div>
-        </div>
-      </section>
-
-      {/* Pricing */}
-      <section id="prijzen" className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <Badge variant="outline" className="mb-4 text-blue-600 border-blue-200 bg-blue-50">Transparante prijzen</Badge>
-            <h2 className="text-4xl font-bold text-slate-900 mb-4 tracking-tight">Kies jouw plan</h2>
-            <p className="text-lg text-slate-500 max-w-xl mx-auto">
-              Start gratis. Betaal alleen als je wilt groeien. Geen verborgen kosten.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {SUBSCRIPTION_PLANS.map((plan) => (
-              <div key={plan.id} className={`relative rounded-2xl p-8 border transition-all ${plan.highlight ? "bg-slate-900 border-slate-900 text-white shadow-2xl md:scale-105" : "bg-white border-slate-100 hover:border-slate-200 hover:shadow-lg"}`}>
-                {plan.highlight && (
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-xs font-bold px-4 py-1.5 rounded-full whitespace-nowrap">
-                    Meest gekozen
-                  </div>
-                )}
-                <div className="mb-6">
-                  <div className={`text-sm font-semibold mb-1 ${plan.highlight ? "text-slate-400" : "text-slate-500"}`}>{plan.name}</div>
-                  <div className="flex items-end gap-2">
-                    <span className={`text-4xl font-bold ${plan.highlight ? "text-white" : "text-slate-900"}`}>
-                      {plan.price === 0 ? "Gratis" : `€ ${plan.price}`}
-                    </span>
-                    {plan.price > 0 && <span className={`text-sm pb-1 ${plan.highlight ? "text-slate-400" : "text-slate-500"}`}>{plan.period}</span>}
-                  </div>
-                  <div className={`text-sm mt-2 ${plan.highlight ? "text-slate-400" : "text-slate-500"}`}>{plan.description}</div>
-                </div>
-                <ul className="space-y-3 mb-8">
-                  {plan.features.map((f, i) => (
-                    <li key={i} className="flex items-start gap-2.5 text-sm">
-                      <CheckCircle className={`w-4 h-4 flex-shrink-0 mt-0.5 ${plan.highlight ? "text-blue-400" : "text-green-500"}`} />
-                      <span className={plan.highlight ? "text-slate-200" : "text-slate-700"}>{f}</span>
-                    </li>
-                  ))}
-                  {plan.limitations.map((l, i) => (
-                    <li key={`l${i}`} className="flex items-start gap-2.5 text-sm opacity-50">
-                      <X className="w-4 h-4 flex-shrink-0 mt-0.5 text-slate-400" />
-                      <span className={plan.highlight ? "text-slate-400" : "text-slate-500"}>{l}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Link href="/dealer/registreren">
-                  <Button className={`w-full rounded-full font-semibold ${plan.highlight ? "bg-white text-slate-900 hover:bg-slate-100" : "bg-slate-900 text-white hover:bg-slate-800"}`}>
-                    {plan.cta}
-                  </Button>
-                </Link>
-              </div>
-            ))}
-          </div>
-          <p className="text-center text-sm text-slate-400 mt-8">
-            Kredietkaart alleen vereist bij betaalde plannen · Opzegging op elk moment · BTW-factuur inbegrepen
-          </p>
         </div>
       </section>
 
@@ -405,11 +349,11 @@ export default function HomePage() {
           </div>
           <div className="space-y-4">
             {[
-              { q: "Wie ziet mijn contactgegevens?", a: "Alleen dealers die credits uitgeven om jouw aanvraag te openen. Jouw telefoonnummer is niet zichtbaar totdat jij zelf contact initieert via ons platform." },
-              { q: "Kan ik mijn aanvraag intrekken?", a: "Ja. Via jouw consumentendashboard kun je een aanvraag op elk moment pauzeren of verwijderen. Dealers ontvangen dan geen toegang meer." },
-              { q: "Wordt mijn e-mailadres geverifieerd?", a: "Ja. Na het plaatsen van een aanvraag ontvang je een verificatiemail. Pas na verificatie is je aanvraag zichtbaar voor dealers. Dit garandeert kwaliteit voor alle partijen." },
-              { q: "Wat als ik geen aanbiedingen ontvang?", a: "Als je na 48 uur geen enkele reactie hebt ontvangen, neemt ons team contact met je op om je aanvraag te optimaliseren of te verwijzen naar een specifieke dealer in jouw regio." },
               { q: "Is AutoMatch gratis voor kopers?", a: "Volledig gratis. AutoMatch verdient uitsluitend aan dealers die credits gebruiken om leads te openen. Er zijn geen verborgen kosten of abonnementen voor kopers." },
+              { q: "Wie ziet mijn contactgegevens?", a: "Alleen dealers die credits uitgeven om jouw aanvraag te openen. Jouw telefoonnummer is niet zichtbaar totdat jij zelf contact initieert via ons platform." },
+              { q: "Wordt mijn e-mailadres geverifieerd?", a: "Ja. Na het plaatsen van een aanvraag ontvang je een verificatiemail. Pas na verificatie is je aanvraag zichtbaar voor dealers. Dit garandeert kwaliteit voor alle partijen." },
+              { q: "Kan ik mijn aanvraag intrekken?", a: "Ja. Via jouw portaal kun je een aanvraag op elk moment pauzeren of verwijderen. Dealers ontvangen dan geen toegang meer." },
+              { q: "Wat als ik geen aanbiedingen ontvang?", a: "Als je na 48 uur geen enkele reactie hebt ontvangen, neemt ons team contact met je op om je aanvraag te optimaliseren of te verwijzen naar een specifieke dealer in jouw regio." },
               { q: "Zijn alle dealers betrouwbaar?", a: "Dealers worden geverifieerd op KvK-inschrijving, RDW-erkenning en beoordeling door eerdere kopers. Dealers met een slechte beoordeling worden van het platform verwijderd." },
             ].map((faq, i) => (
               <details key={i} className="group bg-white rounded-2xl border border-slate-100 overflow-hidden">

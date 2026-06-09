@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { DUMMY_LEADS, getLeadScoreLabel, formatCurrency, getBuyIntentUrgency } from "@/lib/data";
 import {
   Search, MapPin, Clock, Unlock, Eye, BadgeCheck, Phone,
-  PhoneOff, Info, Star, Zap, ChevronDown
+  PhoneOff, Info, Star, Zap, ChevronDown, Car, Image, FileText,
 } from "lucide-react";
 
 const RADIUS_OPTIONS = [25, 50, 75, 100, 150];
@@ -195,16 +195,93 @@ export default function LeadsPage() {
 
                     {/* Opened: full details */}
                     {isOpen && (
-                      <div className="mt-4 pt-4 border-t border-slate-100 animate-fade-in">
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-4">
-                          <div><span className="text-slate-400 text-xs uppercase tracking-wide">Bouwjaar</span><div className="font-semibold text-slate-900 mt-1">{lead.yearMin}–{lead.yearMax}</div></div>
-                          <div><span className="text-slate-400 text-xs uppercase tracking-wide">Regio</span><div className="font-semibold text-slate-900 mt-1">{lead.location} ({lead.postcode})</div></div>
-                          <div><span className="text-slate-400 text-xs uppercase tracking-wide">Kooptermijn</span><div className="font-semibold text-slate-900 mt-1">{lead.buyIntent}</div></div>
-                          <div><span className="text-slate-400 text-xs uppercase tracking-wide">Inruil</span><div className="font-semibold text-slate-900 mt-1">{lead.hasTradeIn ? "Ja" : "Nee"}</div></div>
+                      <div className="mt-4 pt-4 border-t border-slate-100 animate-fade-in space-y-4">
+
+                        {/* Basisinfo */}
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                          <div>
+                            <span className="text-slate-400 text-xs uppercase tracking-wide">Bouwjaar</span>
+                            <div className="font-semibold text-slate-900 mt-1">{lead.yearMin}–{lead.yearMax}</div>
+                          </div>
+                          <div>
+                            <span className="text-slate-400 text-xs uppercase tracking-wide">Regio</span>
+                            <div className="font-semibold text-slate-900 mt-1">{lead.location} ({lead.postcode})</div>
+                          </div>
+                          <div>
+                            <span className="text-slate-400 text-xs uppercase tracking-wide">Kooptermijn</span>
+                            <div className="font-semibold text-slate-900 mt-1">{lead.buyIntent}</div>
+                          </div>
+                          <div>
+                            <span className="text-slate-400 text-xs uppercase tracking-wide">Inruil</span>
+                            <div className="font-semibold text-slate-900 mt-1">{lead.hasTradeIn ? "Ja" : "Nee"}</div>
+                          </div>
                         </div>
 
-                        {/* Contact info */}
-                        <div className="bg-slate-50 rounded-xl p-4 mb-4">
+                        {/* Inruilauto details */}
+                        {lead.hasTradeIn && (
+                          <div className="bg-amber-50 border border-amber-200 rounded-xl overflow-hidden">
+                            <div className="flex items-center gap-2 px-4 py-2.5 bg-amber-100/60 border-b border-amber-200">
+                              <Car className="w-4 h-4 text-amber-700" />
+                              <span className="text-xs font-bold text-amber-800 uppercase tracking-wide">Inruilauto</span>
+                            </div>
+                            <div className="p-4 space-y-3">
+                              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+                                <div>
+                                  <span className="text-amber-700/70 text-xs uppercase tracking-wide font-medium">Kenteken</span>
+                                  <div className="font-bold text-slate-900 mt-1 font-mono tracking-wider text-base">
+                                    {lead.tradeInLicense ?? "–"}
+                                  </div>
+                                </div>
+                                <div>
+                                  <span className="text-amber-700/70 text-xs uppercase tracking-wide font-medium">Kilometerstand</span>
+                                  <div className="font-semibold text-slate-900 mt-1">
+                                    {lead.tradeInMileage
+                                      ? lead.tradeInMileage.toLocaleString("nl-NL") + " km"
+                                      : "–"}
+                                  </div>
+                                </div>
+                              </div>
+                              {lead.tradeInRemarks && (
+                                <div>
+                                  <div className="flex items-center gap-1.5 text-amber-700/70 text-xs uppercase tracking-wide font-medium mb-1">
+                                    <FileText className="w-3 h-3" /> Opmerkingen
+                                  </div>
+                                  <p className="text-sm text-slate-700 leading-relaxed bg-white rounded-lg border border-amber-200 px-3 py-2">
+                                    {lead.tradeInRemarks}
+                                  </p>
+                                </div>
+                              )}
+                              {/* Foto's */}
+                              <div>
+                                <div className="flex items-center gap-1.5 text-amber-700/70 text-xs uppercase tracking-wide font-medium mb-2">
+                                  <Image className="w-3 h-3" /> Foto&apos;s
+                                </div>
+                                {lead.tradeInPhotos && lead.tradeInPhotos.length > 0 ? (
+                                  <div className="grid grid-cols-3 gap-2">
+                                    {lead.tradeInPhotos.map((url, i) => (
+                                      <a key={i} href={url} target="_blank" rel="noopener noreferrer">
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img
+                                          src={url}
+                                          alt={`Inruil foto ${i + 1}`}
+                                          className="w-full aspect-video object-cover rounded-lg border border-amber-200 hover:opacity-90 transition-opacity"
+                                        />
+                                      </a>
+                                    ))}
+                                  </div>
+                                ) : (
+                                  <div className="flex items-center gap-2 text-xs text-amber-700/60 bg-white rounded-lg border border-amber-200 px-3 py-2.5">
+                                    <Image className="w-3.5 h-3.5" />
+                                    Geen foto&apos;s geüpload door de koper
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Contactgegevens */}
+                        <div className="bg-slate-50 rounded-xl p-4">
                           <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Contactgegevens</div>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
                             <div><span className="text-slate-500">Naam:</span> <span className="font-medium text-slate-900">J. de Vries</span></div>
@@ -218,7 +295,7 @@ export default function LeadsPage() {
                         </div>
 
                         {/* Refund notice */}
-                        <div className="flex items-start gap-2 text-xs text-slate-500 bg-blue-50 border border-blue-100 rounded-xl p-3 mb-4">
+                        <div className="flex items-start gap-2 text-xs text-slate-500 bg-blue-50 border border-blue-100 rounded-xl p-3">
                           <Info className="w-3.5 h-3.5 flex-shrink-0 mt-0.5 text-blue-500" />
                           Geen reactie van de consument binnen 48 uur? Jouw credit wordt automatisch teruggestort.
                         </div>

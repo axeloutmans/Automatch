@@ -3,10 +3,9 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { SUBSCRIPTION_PLANS } from "@/lib/data";
 import {
   CheckCircle, ArrowRight, BadgeCheck, Shield, Zap, TrendingUp,
-  Users, MapPin, Filter, Bell, BarChart3, X, Star
+  Users, MapPin, Filter, Bell, BarChart3, Star, X
 } from "lucide-react";
 
 export const metadata = {
@@ -41,11 +40,6 @@ export default function VoorDealersPage() {
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </Link>
-            <a href="#prijzen">
-              <Button variant="ghost" size="lg" className="text-slate-400 hover:text-white rounded-full px-6">
-                Bekijk abonnementen →
-              </Button>
-            </a>
           </div>
           <p className="mt-4 text-sm text-slate-500">Geen creditcard vereist. Gratis 5 credits bij aanmelding.</p>
         </div>
@@ -138,56 +132,6 @@ export default function VoorDealersPage() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Pricing */}
-      <section id="prijzen" className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
-            <Badge variant="outline" className="mb-4 text-blue-600 border-blue-200 bg-blue-50">Transparante prijzen</Badge>
-            <h2 className="text-4xl font-bold text-slate-900 mb-4 tracking-tight">Kies jouw plan</h2>
-            <p className="text-lg text-slate-500 max-w-xl mx-auto">Start gratis. Schaal op als je groeit. Geen verplichtingen.</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {SUBSCRIPTION_PLANS.map((plan) => (
-              <div key={plan.id} className={`relative rounded-2xl p-8 border transition-all ${plan.highlight ? "bg-slate-900 border-slate-900 text-white shadow-2xl md:scale-105" : "bg-white border-slate-100 hover:border-slate-200 hover:shadow-lg"}`}>
-                {plan.highlight && (
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-xs font-bold px-4 py-1.5 rounded-full">Meest gekozen</div>
-                )}
-                <div className="mb-6">
-                  <div className={`text-sm font-semibold mb-1 ${plan.highlight ? "text-slate-400" : "text-slate-500"}`}>{plan.name}</div>
-                  <div className="flex items-end gap-2">
-                    <span className={`text-4xl font-bold ${plan.highlight ? "text-white" : "text-slate-900"}`}>
-                      {plan.price === 0 ? "Gratis" : `€ ${plan.price}`}
-                    </span>
-                    {plan.price > 0 && <span className={`text-sm pb-1 ${plan.highlight ? "text-slate-400" : "text-slate-500"}`}>{plan.period}</span>}
-                  </div>
-                  <div className={`text-sm mt-2 ${plan.highlight ? "text-slate-400" : "text-slate-500"}`}>{plan.description}</div>
-                </div>
-                <ul className="space-y-3 mb-8">
-                  {plan.features.map((f, i) => (
-                    <li key={i} className="flex items-start gap-2.5 text-sm">
-                      <CheckCircle className={`w-4 h-4 flex-shrink-0 mt-0.5 ${plan.highlight ? "text-blue-400" : "text-green-500"}`} />
-                      <span className={plan.highlight ? "text-slate-200" : "text-slate-700"}>{f}</span>
-                    </li>
-                  ))}
-                  {plan.limitations.map((l, i) => (
-                    <li key={`l${i}`} className="flex items-start gap-2.5 text-sm opacity-40">
-                      <X className="w-4 h-4 flex-shrink-0 mt-0.5" />
-                      <span>{l}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Link href="/dealer/registreren">
-                  <Button className={`w-full rounded-full font-semibold ${plan.highlight ? "bg-white text-slate-900 hover:bg-slate-100" : "bg-slate-900 text-white hover:bg-slate-800"}`}>
-                    {plan.cta}
-                  </Button>
-                </Link>
-              </div>
-            ))}
-          </div>
-          <p className="text-center text-sm text-slate-400 mt-8">Opzegging op elk moment · BTW-factuur inbegrepen · Credits vervallen niet</p>
         </div>
       </section>
 
