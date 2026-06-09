@@ -498,14 +498,8 @@ export default function SearchForm() {
                     {budgetSignal === "low" && (
                       <>
                         <strong className="block mb-1">Dit budget lijkt niet realistisch.</strong>
-                        {yearMin > 0
-                          ? <>Vergelijkbare voertuigen van bouwjaar {yearMin}+ worden aangeboden tussen{" "}
-                            <strong>{formatCurrency(adjustedMarket.min)}</strong> en{" "}
-                            <strong>{formatCurrency(adjustedMarket.max)}</strong>.</>
-                          : <>Vergelijkbare voertuigen worden aangeboden tussen{" "}
-                            <strong>{formatCurrency(adjustedMarket.min)}</strong> en{" "}
-                            <strong>{formatCurrency(adjustedMarket.max)}</strong>.</>
-                        }
+                        Het marktgemiddelde voor deze specificaties ligt rond{" "}
+                        <strong>{formatCurrency(adjustedMarket.avg)}</strong>.
                         <div className="mt-2 flex flex-wrap gap-1.5 text-xs">
                           <span className="bg-red-100 px-2 py-0.5 rounded-full">Budget verhogen</span>
                           <span className="bg-red-100 px-2 py-0.5 rounded-full">Bouwjaar verlagen</span>
