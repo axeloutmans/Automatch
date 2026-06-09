@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Car, LayoutDashboard, Users, Package, GitMerge, CreditCard, FileText, Settings, LogOut, Bell } from "lucide-react";
+import { Car, LayoutDashboard, Users, Package, GitMerge, CreditCard, FileText, Settings, LogOut, Bell, MessageSquare } from "lucide-react";
 
 const NAV = [
   { href: "/dealer/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/dealer/leads", label: "Leads", icon: Users, badge: "12" },
   { href: "/dealer/voorraad", label: "Mijn voorraad", icon: Package },
   { href: "/dealer/matches", label: "Matches", icon: GitMerge, badge: "3" },
+  { href: "/dealer/berichten", label: "Berichten", icon: MessageSquare, badge: "2" },
   { href: "/dealer/credits", label: "Credits", icon: CreditCard },
   { href: "/dealer/facturen", label: "Facturen", icon: FileText },
   { href: "/dealer/instellingen", label: "Instellingen", icon: Settings },
