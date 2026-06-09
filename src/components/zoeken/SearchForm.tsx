@@ -269,18 +269,26 @@ export default function SearchForm() {
 
   const budgetMax = parseInt(data.priceMax) || 0;
   const yearMin = parseInt(data.yearMin) || 0;
+  const mileageMax = parseInt(data.mileageMax) || 0;
 
-  // Pas marktprijzen aan op basis van bouwjaar:
-  // Nieuwer dan gemiddeld → prijs hoger, ouder → prijs lager (~8% per jaar)
-  const adjustedMarket = marketData && yearMin > 0 ? (() => {
-    const diff = yearMin - marketData.avgYear;
-    const factor = Math.pow(1.08, diff); // 8% per jaar
+  // Pas marktprijzen aan op bouwjaar (~8% per jaar) én kilometerstand (~4% per 10k km onder gemiddelde)
+  const adjustedMarket = marketData ? (() => {
+    let factor = 1;
+    if (yearMin > 0) {
+      const yearDiff = yearMin - marketData.avgYear;
+      factor *= Math.pow(1.08, yearDiff);
+    }
+    if (mileageMax > 0) {
+      // Lage km → auto is meer waard; hoge km → minder
+      const kmDiff = marketData.avgKm - mileageMax; // positief = gevraagd max lager dan gemiddelde
+      factor *= Math.pow(1.04, kmDiff / 10000);
+    }
     return {
       min: Math.round(marketData.min * factor),
       max: Math.round(marketData.max * factor),
       avg: Math.round(marketData.avg * factor),
     };
-  })() : marketData ? { min: marketData.min, max: marketData.max, avg: marketData.avg } : null;
+  })() : null;
 
   const budgetSignal = adjustedMarket && budgetMax > 0
     ? budgetMax < adjustedMarket.min ? "low" : budgetMax > adjustedMarket.max ? "high" : "good"
@@ -518,7 +526,8 @@ export default function SearchForm() {
                     {marketData && (
                       <div className="mt-1.5 text-xs opacity-70 flex items-center gap-1">
                         <Info className="w-3 h-3" />
-                        Referentie: gemiddeld bouwjaar {marketData.avgYear} · {marketData.avgKm.toLocaleString("nl-NL")} km op de markt
+                        Referentie: gemiddeld bouwjaar {marketData.avgYear} · {marketData.avgKm.toLocaleString("nl-NL")} km
+                        {(yearMin > 0 || mileageMax > 0) && " · prijs aangepast op jouw criteria"}
                       </div>
                     )}
                   </div>
