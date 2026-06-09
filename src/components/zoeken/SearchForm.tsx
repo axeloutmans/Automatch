@@ -271,17 +271,17 @@ export default function SearchForm() {
   const yearMin = parseInt(data.yearMin) || 0;
   const mileageMax = parseInt(data.mileageMax) || 0;
 
-  // Pas marktprijzen aan op bouwjaar (~8% per jaar) én kilometerstand (~4% per 10k km onder gemiddelde)
+  // Pas marktprijzen aan op bouwjaar en kilometerstand
   const adjustedMarket = marketData ? (() => {
     let factor = 1;
+    // Bouwjaar: ~8% duurder per jaar nieuwer dan gemiddelde
     if (yearMin > 0) {
-      const yearDiff = yearMin - marketData.avgYear;
-      factor *= Math.pow(1.08, yearDiff);
+      factor *= Math.pow(1.08, yearMin - marketData.avgYear);
     }
+    // Kilometerstand: lage max km = duurdere auto's beschikbaar
+    // Gebruik (avgKm / mileageMax)^0.3 zodat extreme waarden niet doorslaan
     if (mileageMax > 0) {
-      // Lage km → auto is meer waard; hoge km → minder
-      const kmDiff = marketData.avgKm - mileageMax; // positief = gevraagd max lager dan gemiddelde
-      factor *= Math.pow(1.04, kmDiff / 10000);
+      factor *= Math.pow(marketData.avgKm / mileageMax, 0.3);
     }
     return {
       min: Math.round(marketData.min * factor),
@@ -290,8 +290,13 @@ export default function SearchForm() {
     };
   })() : null;
 
+  // "Goed" = budget ligt tussen 55% en 130% van het gecorrigeerde gemiddelde
+  // Te laag = onder 55% van gemiddelde (onrealistisch voor die specs)
+  // Hoog = boven 130% van gemiddelde (ruim budget)
   const budgetSignal = adjustedMarket && budgetMax > 0
-    ? budgetMax < adjustedMarket.min ? "low" : budgetMax > adjustedMarket.max ? "high" : "good"
+    ? budgetMax < adjustedMarket.avg * 0.55 ? "low"
+    : budgetMax > adjustedMarket.avg * 1.3 ? "high"
+    : "good"
     : null;
 
   const selectedOptCount = Object.keys(data.options).length;
